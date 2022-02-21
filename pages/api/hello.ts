@@ -9,7 +9,7 @@ type Data = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   //await NextCors(req, res, {
   //method: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
@@ -20,5 +20,6 @@ export default async function handler(
 
   //const kitchen = await db.collection("kitchen").find({}).toArray();
   //console.log(kitchen);
-  res.status(200).json({ name: "John Doe" });
+  //res.status(200).json({ name: "John Doe" });
+  res.send("ok");
 }
