@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <div className="text-slate-200 flex flex-row justify-between items-center pt-3 pb-3">
+    <div className="text-slate-200 flex flex-row justify-between items-center pt-6 pb-5">
       <p style={{ fontFamily: "Dancing Script" }} className="text-4xl">
         Smart Homee
       </p>
