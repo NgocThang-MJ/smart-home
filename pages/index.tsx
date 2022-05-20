@@ -121,7 +121,7 @@ export default function Home() {
       setHum(hum);
     };
     getDHT11();
-    let intervalId = setInterval(getDHT11, 5000);
+    let intervalId = setInterval(getDHT11, 2500);
 
     return () => {
       clearInterval(intervalId);
