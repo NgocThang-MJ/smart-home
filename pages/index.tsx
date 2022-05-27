@@ -11,6 +11,7 @@ import { WiHumidity } from "react-icons/wi";
 import { GiComputerFan } from "react-icons/gi";
 import { MdBedroomParent, MdLiving, MdKitchen } from "react-icons/md";
 import { FaToilet } from "react-icons/fa";
+import { RiDoorClosedFill, RiDoorOpenFill } from "react-icons/ri";
 
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 const weatherApi = process.env.NEXT_PUBLIC_WEATHER_API;
@@ -24,6 +25,7 @@ export default function Home() {
   const [kitFan, setKitFan] = useState(false);
   const [toiLamp, setToiLamp] = useState(false);
   const [toiFan, setToiFan] = useState(false);
+  const [mainDoor, setMainDoor] = useState(false);
 
   const [outdoorTemp, setOutdoorTemp] = useState<null | number>(null);
   const [weatherIcon, setWeatherIcon] = useState("02d");
@@ -109,6 +111,16 @@ export default function Home() {
     await axios.post(`${serverUrl}/toilet`, data);
     setToiLamp(lamp);
     setToiFan(fan);
+  };
+
+  const toggleDoor = async () => {
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!serverUrl) return;
+    const data: { door?: number } = {};
+    data["door"] = !mainDoor ? 1 : 0;
+    console.log(data);
+    setMainDoor(!mainDoor);
+    await axios.post(`${serverUrl}/door`, data);
   };
 
   useEffect(() => {
@@ -248,7 +260,7 @@ export default function Home() {
                         <GiComputerFan
                           className={`${
                             livFan && "animate-spin"
-                          } h-8 w-8 text-slate-200 text-white`}
+                          } h-8 w-8 text-slate-200`}
                         />
                         <p className="font-bold">Fan</p>
                       </div>
@@ -309,7 +321,7 @@ export default function Home() {
                         <GiComputerFan
                           className={`${
                             bedFan && "animate-spin"
-                          } h-8 w-8 text-slate-200 text-white`}
+                          } h-8 w-8 text-slate-200`}
                         />
                         <p className="font-bold">Fan</p>
                       </div>
@@ -370,7 +382,7 @@ export default function Home() {
                         <GiComputerFan
                           className={`${
                             kitFan && "animate-spin"
-                          } h-8 w-8 text-slate-200 text-white`}
+                          } h-8 w-8 text-slate-200`}
                         />
                         <p className="font-bold">Fan</p>
                       </div>
@@ -431,7 +443,7 @@ export default function Home() {
                         <GiComputerFan
                           className={`${
                             toiFan && "animate-spin"
-                          } h-8 w-8 text-slate-200 text-white`}
+                          } h-8 w-8 text-slate-200`}
                         />
                         <p className="font-bold">Fan</p>
                       </div>
@@ -455,18 +467,50 @@ export default function Home() {
             </div>
 
             <div>
-              <div className="flex items-center mb-6">
-                <BsThermometerSun className="text-white text-6xl ml-4 text-red-400" />
-                <div className="flex text-white">
-                  <p className="text-[80px]">{temp && temp}</p>
-                  <span className="text-4xl mt-3"> &#8451;</span>
+              <div className="border border-gray-700/20 rounded-xl p-5 shadow-lg shadow-gray-700/50 mb-10">
+                <p className="text-slate-200 text-3xl text-center">
+                  Living Room
+                </p>
+                <div className="flex items-center mb-4">
+                  <BsThermometerSun className="text-white text-6xl ml-4 text-red-400" />
+                  <div className="flex text-white">
+                    <p className="text-[80px]">{temp && temp}</p>
+                    <span className="text-4xl mt-3"> &#8451;</span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <WiHumidity className="text-white text-7xl text-cyan-300" />
+                  <div className="flex text-white">
+                    <p className="text-[80px]">{hum && hum}</p>
+                    <span className="text-4xl mt-3">%</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center">
-                <WiHumidity className="text-white text-7xl text-cyan-300" />
-                <div className="flex text-white">
-                  <p className="text-[80px]">{hum && hum}</p>
-                  <span className="text-4xl mt-3">%</span>
+              <div className="w-48 h-32 rounded-2xl bg-gradient-to-t from-[#654ea3] to-[#eaafc8]">
+                <div className="p-6 text-slate-200 m-auto flex justify-between h-full">
+                  <div className="flex flex-col justify-between">
+                    <div className="h-8 w-8 text-slate-200">
+                      {mainDoor ? (
+                        <RiDoorOpenFill className="h-8 w-8" />
+                      ) : (
+                        <RiDoorClosedFill className="h-8 w-8" />
+                      )}
+                    </div>
+                    <p className="font-bold">Main Door</p>
+                  </div>
+                  <div className="relative">
+                    <div
+                      onClick={() => toggleDoor()}
+                      className="hover:cursor-pointer"
+                    >
+                      <div className="block bg-gray-600 w-12 h-6 rounded-full"></div>
+                      <div
+                        className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-all ${
+                          mainDoor ? "bg-green-300 translate-x-6" : ""
+                        }`}
+                      ></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
